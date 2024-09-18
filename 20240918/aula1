@@ -1,0 +1,16 @@
+package com.ifsc.ctds;
+
+import java.util.Scanner;
+
+public class main {
+
+	public static void main(String[] args) {
+		int dia;
+		Scanner teclado = new Scanner(System.in);
+		System.out.println("Digite o dia da semana: ");
+		dia = teclado.nextInt();
+		System.out.println("O dia digitado foi " + dia);
+
+	}
+
+}
