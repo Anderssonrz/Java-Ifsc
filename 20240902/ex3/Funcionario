@@ -1,0 +1,34 @@
+package com.ifsc.ctds.funcionario;
+
+public class Funcionario {
+	private String nome;
+	private String sobrenome;
+	private double horasTrabalhadas;
+	private double valorPorHora;
+	
+	public void informarNome(String meuNome, String meuSobrenome) {
+        this.nome = meuNome;
+        this.sobrenome = meuSobrenome;
+    }
+
+    public void nomeCompleto() {
+        System.out.println("Nome completo: " + this.nome + " " + this.sobrenome);
+    }
+	
+    public void calcularSalario() {
+        double salario = 0; 
+        salario = this.horasTrabalhadas * this.valorPorHora;
+        System.out.println("Salário R$: " + String.format("%2.f", salario));
+    }
+    public void incrementarHoras(double horas) {
+        this.horasTrabalhadas = this.horasTrabalhadas + horas; 
+    }
+
+    public void setValorPorHora(double valorPorHora) {
+        this.valorPorHora = valorPorHora;
+    }
+    
+    public void setHorasTrabalhadas(double horasTrabalhadas) {
+        this.horasTrabalhadas = horasTrabalhadas;
+    }
+}
