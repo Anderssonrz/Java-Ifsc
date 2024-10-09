@@ -1,4 +1,7 @@
+package com.ifsc.ctds;
+
 public class Emprestimo {
+
     private double valorEmprestimo;
     private int numeroParcelas;
 
@@ -12,7 +15,7 @@ public class Emprestimo {
     }
 
     public boolean isAprovado(double salario) {
-        double valorParcela = calcularValorParcela();
+        double valorParcela = calcularValorParcela(); 
         return valorParcela <= (0.3 * salario);
     }
 }
