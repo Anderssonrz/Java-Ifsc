@@ -1,24 +1,24 @@
+package com.ifsc.ctds;
+
 import java.util.Scanner;
 
-public class Main {
+public class TesteEmprestimo {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Ler informações do usuário
-        System.out.print("Digite o valor do empréstimo: ");
+        System.out.print("Digite o valor do emprestimo: ");
         double valorEmprestimo = scanner.nextDouble();
 
-        System.out.print("Digite o número de parcelas: ");
-        int numeroParcelas = scanner.nextInt();
+        System.out.print("Digite o numero de parcelas: ");
+        int numeroParcelas = scanner.nextInt(); 
 
-        System.out.print("Digite o salário do solicitante: ");
-        double salario = scanner.nextDouble();
+        System.out.print("Digite o salario do solicitante: ");
+        double salario = scanner.nextDouble(); 
 
-        // Criar objetos
         Solicitante solicitante = new Solicitante(salario);
         Emprestimo emprestimo = new Emprestimo(valorEmprestimo, numeroParcelas);
 
-        // Verificar aprovação
         if (emprestimo.isAprovado(solicitante.getSalario())) {
             System.out.println("Empréstimo aprovado!");
         } else {
