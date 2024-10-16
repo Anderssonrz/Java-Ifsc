@@ -6,21 +6,30 @@ public class TesteAnimal {
 
 	public static void main(String[] args) {
 		ArrayList<Animal> listaAnimais = new ArrayList<Animal>();
-		Cachorro rex = new Cachorro();
-		rex.emitirSom();
+		Cachorro dog = new Cachorro();
+		listaAnimais.add(dog);
+
+		Cachorro dog2 = new Cachorro();
+		listaAnimais.add(dog2);
 
 		Gato garfeld = new Gato();
-		garfeld.emitirSom();
+		listaAnimais.add(garfeld);
 
 		Animal gato2 = new Gato();
-		gato2.emitirSom();
-		
+		listaAnimais.add(gato2);
+
 		Leao lion = new Leao();
-		lion.emitirSom();
+		listaAnimais.add(lion);
 
 		for (int i = 0; i < listaAnimais.size(); i++) {
 			Animal umAnimal = listaAnimais.get(i);
 			umAnimal.emitirSom();
+
+		}
+		Animal animal = new Gato();
+		if (animal instanceof Gato) {
+			Gato umGato = (Gato) animal;
+			umGato.emitirSom();
 		}
 	}
 
