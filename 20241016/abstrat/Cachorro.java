@@ -1,7 +1,7 @@
 package com.ifsc.ctds;
 
 public class Cachorro extends Animal {
-	public void miar() {
+	public void latir() {
 		System.out.println("Latir");
 	}
 }
