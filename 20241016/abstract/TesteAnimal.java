@@ -8,6 +8,9 @@ public class TesteAnimal {
 		
 		rex.emitirSom();
 		garfeld.emitirSom();
+
+		Animal gato2 = new Gato();
+		gato2.emitirSom();
 	}
 
 }
