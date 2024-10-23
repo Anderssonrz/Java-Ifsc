@@ -29,7 +29,7 @@ public class Main extends Application {
 			grid.setVgap(10);
 			grid.setPadding(new Insets(25, 25, 25, 25));
 
-			Scene scene = new Scene(grid, 400, 200);
+			Scene scene = new Scene(grid, 600, 300);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 
@@ -50,11 +50,19 @@ public class Main extends Application {
 			grid.add(txtNum2, 1, 2);
 
 			Button btnSomar = new Button("Somar");
-
+			Button btnSubtrair = new Button("Subtrair");
+			Button btnDividir = new Button("Dividir");
+			Button btnMultiplicar = new Button("Multiplicar");
+			Button btnLimpar = new Button("Limpar");
 			HBox caixaBtn = new HBox(10);
 
 			caixaBtn.setAlignment(Pos.BOTTOM_RIGHT);
 			caixaBtn.getChildren().add(btnSomar);
+			caixaBtn.getChildren().add(btnSubtrair);
+			caixaBtn.getChildren().add(btnDividir);
+			caixaBtn.getChildren().add(btnMultiplicar);
+			caixaBtn.getChildren().add(btnLimpar);
+
 			grid.add(caixaBtn, 1, 4);
 
 			final Text resultado = new Text();
@@ -71,6 +79,64 @@ public class Main extends Application {
 
 					resultado.setFill(Color.FIREBRICK);
 					resultado.setText("Total: " + numero1);
+
+				}
+			});
+
+			btnMultiplicar.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					Double numero1 = Double.parseDouble(txtNum1.getText());
+					Double numero2 = Double.parseDouble(txtNum2.getText());
+
+					numero1 = numero1 * numero2;
+
+					resultado.setFill(Color.FIREBRICK);
+					resultado.setText("Total: " + numero1);
+
+				}
+			});
+
+			btnDividir.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					Double numero1 = Double.parseDouble(txtNum1.getText());
+					Double numero2 = Double.parseDouble(txtNum2.getText());
+
+					numero1 = numero1 / numero2;
+
+					resultado.setFill(Color.FIREBRICK);
+					resultado.setText("Total: " + numero1);
+
+				}
+			});
+			
+			btnSubtrair.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					Double numero1 = Double.parseDouble(txtNum1.getText());
+					Double numero2 = Double.parseDouble(txtNum2.getText());
+
+					numero1 = numero1 - numero2;
+
+					resultado.setFill(Color.FIREBRICK);
+					resultado.setText("Total: " + numero1);
+
+				}
+			});
+
+			btnLimpar.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+
+					txtNum1.setText("");
+					txtNum2.clear();
+					resultado.setText(new String());
+					txtNum1.requestFocus();
 
 				}
 			});
