@@ -16,6 +16,7 @@
       <menus>
         <Menu fx:id="mnuCadastro" mnemonicParsing="false" text="Cadastro">
           <items>
+                  <MenuItem fx:id="mnoAmigo" mnemonicParsing="false" onAction="#onClickMnoAmigo" text="Amigo" />
             <MenuItem fx:id="mnoCaixa" mnemonicParsing="false" onAction="#onClickMnoCaixa" text="Caixa" />
             <MenuItem fx:id="mnoTipoColecao" mnemonicParsing="false" onAction="#onClickMnoTipoColecao" text="Tipo de Coleção" />
             <MenuItem fx:id="mnoRevista" mnemonicParsing="false" onAction="#onClickMnoRevista" text="Revista" />

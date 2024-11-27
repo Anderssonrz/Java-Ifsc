@@ -8,7 +8,7 @@ public class Conexao {
 
 	private static final String LOGIN_BANCO = "root";
 
-	private static final String SENHA_BANCO = "root";
+	private static final String SENHA_BANCO = "";
 
 	private static final String URL_BANCO = "jdbc:mysql://localhost:3306/mydb?autoReconnect=true&useSSL=false";
 

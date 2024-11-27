@@ -42,6 +42,9 @@ public class MenuController implements Initializable {
 	private Menu mnuCadastro;
 
 	@FXML
+	private MenuItem mnoAmigo;
+
+	@FXML
 	private MenuItem mnoCaixa;
 
 	@FXML
@@ -87,6 +90,50 @@ public class MenuController implements Initializable {
 		this.stage = stage;
 	}
 
+	@FXML
+	void onClickMnoAmigo(ActionEvent event) {
+		try {
+			// carregando o loader
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/peregrinoti/view/AmigoLista.fxml"));
+			Parent amigoListaXML = loader.load();
+
+			// carregando o controller e a scene
+			CaixaListaController caixaListaController = loader.getController();
+			Scene amigoListaLayout = new Scene(amigoListaXML);
+
+			this.getStage().setScene(amigoListaLayout);
+			this.getStage().setTitle("Cadastro de amigo");
+
+			// atribuindo evento para fechar janela
+			this.getStage().setOnCloseRequest(e -> {
+				if (caixaListaController.onCloseQuery()) {
+					this.getStage().close();
+				} else {
+					e.consume();
+				}
+			});
+
+			this.stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@FXML
 	void onClickMnoCaixa(ActionEvent event) {
 		try {

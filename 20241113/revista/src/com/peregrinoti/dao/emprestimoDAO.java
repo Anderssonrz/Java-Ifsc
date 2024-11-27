@@ -7,22 +7,22 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.peregrinoti.entity.Revista;
+import com.peregrinoti.entity.Emprestimo;
 
-public class emprestimoDAO implements DAO<Revista> {
+public class emprestimoDAO implements DAO<Emprestimo> {
 
-	private CaixaDAO caixaDAO;
+	private AmigoDAO AmigoDAO;
 
-	private TipoColecaoDAO tipoColecaoDAO;
+	private RevistaDAO RevistaDAO;
 
 	public emprestimoDAO() {
-		this.caixaDAO = new CaixaDAO();
-		this.tipoColecaoDAO = new TipoColecaoDAO();
+		this.AmigoDAO = new AmigoDAO();
+		this.RevistaDAO = new RevistaDAO();
 	}
 
 	@Override
 	public Object get(Long id) {
-		Revista revista = null;
+		Emprestimo emprestimo = null;
 		String sql = "select * from revista where id = ?";
 
 		// Recupera a conexão com o banco
@@ -43,16 +43,16 @@ public class emprestimoDAO implements DAO<Revista> {
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				revista = new Revista();
+				emprestimo = new Emprestimo();
 
 				// atribui campo para atributo
-				revista.setId(rset.getLong("id"));
-				revista.setNome(rset.getString("nome"));
-				revista.setAno(rset.getDate("ano"));
+				emprestimo.setId(rset.getLong("id"));
+				emprestimo.setNome(rset.getString("nome"));
+				emprestimo.setAno(rset.getDate("ano"));
 
 				// buscando as chaves estrangeiras
-				revista.setCaixa(this.caixaDAO.get(rset.getLong("caixa_id")));
-				revista.setTipoColecao(this.tipoColecaoDAO.get(rset.getLong("tipo_colecao_id")));
+				emprestimo.setCaixa(this.caixaDAO.get(rset.getLong("caixa_id")));
+				emprestimo.setTipoColecao(this.tipoColecaoDAO.get(rset.getLong("tipo_colecao_id")));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,14 +69,14 @@ public class emprestimoDAO implements DAO<Revista> {
 				e.printStackTrace();
 			}
 		}
-		return revista;
+		return emprestimo;
 	}
 
 	@Override
-	public List<Revista> getAll() {
-		List<Revista> revistas = new ArrayList<Revista>();
+	public List<Emprestimo> getAll() {
+		List<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
 
-		String sql = "select * from revista";
+		String sql = "select * from emprestimo";
 
 		// Recupera a conexão com o banco
 		Connection conexao = null;
@@ -95,18 +95,18 @@ public class emprestimoDAO implements DAO<Revista> {
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				Revista revista = new Revista();
+				Emprestimo emprestimo = new Emprestimo();
 
 				// atribui campo para atributo
-				revista.setId(rset.getLong("id"));
-				revista.setNome(rset.getString("nome"));
-				revista.setAno(rset.getDate("ano"));
+				emprestimo.setId(rset.getLong("id"));
+				emprestimo.setNome(rset.getString("nome"));
+				emprestimo.setAno(rset.getDate("ano"));
 
 				// buscando as chaves estrangeiras
-				revista.setCaixa(this.caixaDAO.get(rset.getLong("caixa_id")));
-				revista.setTipoColecao(this.tipoColecaoDAO.get(rset.getLong("tipo_colecao_id")));
+				emprestimo.setCaixa(this.caixaDAO.get(rset.getLong("caixa_id")));
+				emprestimo.setTipoColecao(this.tipoColecaoDAO.get(rset.getLong("tipo_colecao_id")));
 
-				revistas.add(revista);
+				emprestimos.add(emprestimo);
 			}
 
 		} catch (Exception e) {
@@ -124,11 +124,11 @@ public class emprestimoDAO implements DAO<Revista> {
 				e.printStackTrace();
 			}
 		}
-		return revistas;
+		return emprestimos;
 	}
 
 	@Override
-	public int save(Revista revista) {
+	public int save(Emprestimo revista) {
 		String sql = "insert into revista (nome, ano, caixa_id, tipo_colecao_id)" + " values (?, ?, ?, ?)";
 
 		// Recupera a conexão com o banco
@@ -169,7 +169,7 @@ public class emprestimoDAO implements DAO<Revista> {
 	}
 
 	@Override
-	public boolean update(Revista revista, String[] params) {
+	public boolean update(Emprestimo revista, String[] params) {
 		String sql = "update revista set nome = ?, ano = ?, caixa_id = ?, tipo_colecao_id = ? where id = ?";
 
 		// Recupera a conexão com o banco
@@ -210,7 +210,7 @@ public class emprestimoDAO implements DAO<Revista> {
 	}
 
 	@Override
-	public boolean delete(Revista revista) {
+	public boolean delete(Emprestimo revista) {
 		String sql = "delete from revista where id = ?";
 
 		// Recupera a conexão com o banco
