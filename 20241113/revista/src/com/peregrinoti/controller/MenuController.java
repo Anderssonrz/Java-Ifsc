@@ -98,7 +98,7 @@ public class MenuController implements Initializable {
 			Parent amigoListaXML = loader.load();
 
 			// carregando o controller e a scene
-			CaixaListaController caixaListaController = loader.getController();
+			AmigoListaController amigoListaController = loader.getController();
 			Scene amigoListaLayout = new Scene(amigoListaXML);
 
 			this.getStage().setScene(amigoListaLayout);
@@ -106,7 +106,7 @@ public class MenuController implements Initializable {
 
 			// atribuindo evento para fechar janela
 			this.getStage().setOnCloseRequest(e -> {
-				if (caixaListaController.onCloseQuery()) {
+				if (amigoListaController.onCloseQuery()) {
 					this.getStage().close();
 				} else {
 					e.consume();
