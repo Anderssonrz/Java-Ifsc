@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.peregrinoti.dao.CaixaDAO;
+import com.peregrinoti.dao.Amigodao;
 import com.peregrinoti.entity.Caixa;
 
 import javafx.collections.FXCollections;
@@ -96,7 +96,7 @@ public class CaixaListaController implements Initializable {
 
 	private List<Caixa> listaCaixas;
 	private ObservableList<Caixa> observableListaCaixas = FXCollections.observableArrayList();
-	private CaixaDAO caixaDAO;
+	private Amigodao caixaDAO;
 
 	public static final String CAIXA_EDITAR = " - Editar";
 	public static final String CAIXA_INCLUIR = " - Incluir";
@@ -157,11 +157,11 @@ public class CaixaListaController implements Initializable {
 		}
 	}
 
-	public CaixaDAO getCaixaDAO() {
+	public Amigodao getCaixaDAO() {
 		return caixaDAO;
 	}
 
-	public void setCaixaDAO(CaixaDAO caixaDAO) {
+	public void setCaixaDAO(Amigodao caixaDAO) {
 		this.caixaDAO = caixaDAO;
 	}
 
@@ -183,7 +183,7 @@ public class CaixaListaController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.setCaixaDAO(new CaixaDAO());
+		this.setCaixaDAO(new Amigodao());
 		this.carregarTableViewCaixas();
 		this.selecionarItemTableViewCaixas(null);
 
@@ -255,7 +255,7 @@ public class CaixaListaController implements Initializable {
 
 	public List<Caixa> retornaListagemCaixa() {
 		if (this.getCaixaDAO() == null) {
-			this.setCaixaDAO(new CaixaDAO());
+			this.setCaixaDAO(new AmigoDAO());
 		}
 		return this.getCaixaDAO().getAll();
 	}

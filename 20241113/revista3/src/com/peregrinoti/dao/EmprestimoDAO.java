@@ -6,14 +6,23 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.peregrinoti.entity.Amigo;
+import com.peregrinoti.entity.Emprestimo;
 
-public class AmigoDAO implements DAO<Amigo> {
+public class EmprestimoDAO implements DAO<Emprestimo> {
+
+	private AmigoDAO amigoDAO;
+
+	private RevistaDAO revistaDAO;
+
+	public EmprestimoDAO() {
+		this.amigoDAO = new AmigoDAO();
+		this.revistaDAO = new RevistaDAO();
+	}
 
 	@Override
 	public Object get(Long id) {
-		Amigo amigo = null;
-		String sql = "select * from amigo where id = ?";
+		Emprestimo emprestimo = null;
+		String sql = "select * from emprestimo where id = ?";
 
 		// Recupera a conexão com o banco
 		Connection conexao = null;
@@ -33,16 +42,17 @@ public class AmigoDAO implements DAO<Amigo> {
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				amigo = new Amigo();
+				emprestimo = new Emprestimo();
 
 				// atribui campo para atributo
-				amigo.setId(rset.getLong("id"));
-				amigo.setNome(rset.getString("nome"));
-				amigo.setNomeResponsavel(rset.getString("nome_responsavel"));
-				amigo.setTelefone(rset.getString("telefone"));
-				amigo.setEndereco(rset.getString("endereco"));
-			}
+				emprestimo.setId(rset.getLong("id"));
+				emprestimo.setDataEmprestimo(rset.getDate("data_emprestimo"));
+				emprestimo.setDataDevolucao(rset.getDate("data_devolucao"));
 
+				// buscando as chaves estrangeiras
+				emprestimo.setAmigo(this.amigoDAO.get(rset.getLong("amigo_id")));
+				emprestimo.setRevista(this.revistaDAO.get(rset.getLong("revista_id")));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -58,14 +68,14 @@ public class AmigoDAO implements DAO<Amigo> {
 				e.printStackTrace();
 			}
 		}
-		return amigo;
+		return emprestimo;
 	}
 
 	@Override
-	public List<Amigo> getAll() {
-		List<Amigo> amigos = new ArrayList<Amigo>();
+	public List<Emprestimo> getAll() {
+		List<Emprestimo> revistas = new ArrayList<Emprestimo>();
 
-		String sql = "select * from amigo";
+		String sql = "select * from emprestimo";
 
 		// Recupera a conexão com o banco
 		Connection conexao = null;
@@ -84,16 +94,18 @@ public class AmigoDAO implements DAO<Amigo> {
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				Amigo amigo = new Amigo();
+				Emprestimo emprestimo = new Emprestimo();
 
 				// atribui campo para atributo
-				amigo.setId(rset.getLong("id"));
-				amigo.setNome(rset.getString("nome"));
-				amigo.setNomeResponsavel(rset.getString("nome_responsavel"));
-				amigo.setTelefone(rset.getString("telefone"));
-				amigo.setEndereco(rset.getString("endereco"));
+				emprestimo.setId(rset.getLong("id"));
+				emprestimo.setDataEmprestimo(rset.getDate("data_emprestimo"));
+				emprestimo.setDataDevolucao(rset.getDate("data_devolucao"));
 
-				amigos.add(amigo);
+				// buscando as chaves estrangeiras
+				emprestimo.setAmigo(this.amigoDAO.get(rset.getLong("amigo_id")));
+				emprestimo.setRevista(this.revistaDAO.get(rset.getLong("revista_id")));
+
+				revistas.add(emprestimo);
 			}
 
 		} catch (Exception e) {
@@ -111,13 +123,13 @@ public class AmigoDAO implements DAO<Amigo> {
 				e.printStackTrace();
 			}
 		}
-		return amigos;
-
+		return revistas;
 	}
 
 	@Override
-	public int save(Amigo amigo) {
-		String sql = "insert into amigo (nome, nome_responsavel, telefone, endereco)" + " values (?, ?, ?, ?)";
+	public int save(Emprestimo emprestimo) {
+		String sql = "insert into emprestimo (data_emprestimo, data_devolucao, amigo_id, revista_id)"
+				+ " values (?, ?, ?, ?)";
 
 		// Recupera a conexão com o banco
 		Connection conexao = null;
@@ -130,10 +142,10 @@ public class AmigoDAO implements DAO<Amigo> {
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setString(1, amigo.getNome());
-			stm.setString(2, amigo.getNomeResponsavel());
-			stm.setString(3, amigo.getTelefone());
-			stm.setString(4, amigo.getEndereco());
+			stm.setDate(1, emprestimo.getDataEmprestimo());
+			stm.setDate(2, emprestimo.getDataDevolucao());
+			stm.setLong(3, emprestimo.getAmigo().getId());
+			stm.setLong(4, emprestimo.getRevista().getId());
 
 			stm.execute();
 
@@ -157,8 +169,8 @@ public class AmigoDAO implements DAO<Amigo> {
 	}
 
 	@Override
-	public boolean update(Amigo amigo, String[] params) {
-		String sql = "update amigo set nome = ?, nome_responsavel = ?, telefone = ?, endereco = ? where id = ?";
+	public boolean update(Emprestimo emprestimo, String[] params) {
+		String sql = "update emprestimo set data_emprestimo = ?, data_devolucao = ?, amigo_id = ?, revista_id = ? where id = ?";
 
 		// Recupera a conexão com o banco
 		Connection conexao = null;
@@ -170,11 +182,11 @@ public class AmigoDAO implements DAO<Amigo> {
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setString(1, amigo.getNome());
-			stm.setString(2, amigo.getNomeResponsavel());
-			stm.setString(3, amigo.getTelefone());
-			stm.setString(4, amigo.getEndereco());
-			stm.setLong(5, amigo.getId());
+			stm.setDate(1, emprestimo.getDataEmprestimo());
+			stm.setDate(2, emprestimo.getDataDevolucao());
+			stm.setLong(3, emprestimo.getAmigo().getId());
+			stm.setLong(4, emprestimo.getRevista().getId());
+			stm.setLong(5, emprestimo.getRevista().getId());
 
 			stm.execute();
 
@@ -198,8 +210,8 @@ public class AmigoDAO implements DAO<Amigo> {
 	}
 
 	@Override
-	public boolean delete(Amigo amigo) {
-		String sql = "delete from amigo where id = ?";
+	public boolean delete(Emprestimo emprestimo) {
+		String sql = "delete from emprestimo where id = ?";
 
 		// Recupera a conexão com o banco
 		Connection conexao = null;
@@ -211,9 +223,8 @@ public class AmigoDAO implements DAO<Amigo> {
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setLong(1, amigo.getId());
+			stm.setLong(1, emprestimo.getId());
 			stm.execute();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -232,5 +243,4 @@ public class AmigoDAO implements DAO<Amigo> {
 		}
 		return false;
 	}
-
 }

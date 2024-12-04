@@ -13,6 +13,7 @@ public class Emprestimo {
 	private Amigo amigo;
 
 	private Revista revista;
+	
 
 	public Long getId() {
 		return id;
@@ -38,12 +39,11 @@ public class Emprestimo {
 		this.dataDevolucao = dataDevolucao;
 	}
 
-	public Amigo getAmigo() {
-		return amigo;
-	}
-
 	public void setAmigo(Amigo amigo) {
 		this.amigo = amigo;
+	}
+	public Amigo getAmigo() {
+		return amigo;
 	}
 
 	public Revista getRevista() {
@@ -52,6 +52,16 @@ public class Emprestimo {
 
 	public void setRevista(Revista revista) {
 		this.revista = revista;
+	}
+
+	public void setRevista(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setAmigo(Object object) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

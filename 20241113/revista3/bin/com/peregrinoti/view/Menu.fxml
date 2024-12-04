@@ -24,6 +24,11 @@
             <MenuItem fx:id="mnoSair" mnemonicParsing="false" onAction="#onClickMnoSair" text="Sair" />
           </items>
         </Menu>
+            <Menu fx:id="mnuMovimentacao" mnemonicParsing="false" text="Movimentação">
+              <items>
+                <MenuItem fx:id="mnoEmprestimo" mnemonicParsing="false" onAction="#onClickMnoEmprestimo" text="Emprestimo" />
+              </items>
+            </Menu>
         <Menu fx:id="mnuAjuda" mnemonicParsing="false" text="Ajuda">
           <items>
             <MenuItem fx:id="mnoSobre" mnemonicParsing="false" onAction="#onClickMnoSobre" text="Sobre" />
