@@ -1,16 +1,20 @@
 package com.peregrinoti.controller;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import com.peregrinoti.dao.AmigoDAO;
 import com.peregrinoti.entity.Amigo;
+import com.peregrinoti.entity.Caixa;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -29,7 +33,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class AmigoListaController {
+public class AmigoListaController implements Initializable {
 
 	@FXML
 	private AnchorPane pnlPrincipal;
@@ -100,7 +104,20 @@ public class AmigoListaController {
 
 	@FXML
 	void onClickBtnEditar(ActionEvent event) {
+		Amigo amigo = this.tbvAmigos.getSelectionModel().getSelectedItem();
 
+		if (amigo != null) {
+			boolean btnConfirmarClic = this.onShowTelaAmigoEditar(amigo, AmigoListaController.AMIGO_EDITAR);
+
+			if (btnConfirmarClic) {
+				this.getAmigoDAO().update(amigo, null);
+				this.carregarTableViewAmigos();
+			}
+		} else {
+			Alert alerta = new Alert(Alert.AlertType.ERROR);
+			alerta.setContentText("Por favor, escolha um(a) amigo na tabela!");
+			alerta.show();
+		}
 	}
 
 	@FXML
@@ -217,4 +234,24 @@ public class AmigoListaController {
 		return false;
 	}
 
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		this.setAmigoDAO(new AmigoDAO());
+		this.carregarTableViewAmigos();
+		this.selecionarItemTableViewAmigos(null);
+
+		this.tbvAmigos.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldValue, newValue) -> selecionarItemTableViewAmigos(newValue));
+
+	}
+
+	public void selecionarItemTableViewAmigos(Amigo amigo) {
+		if (amigo != null) {
+			this.lblNomeValor.setText(amigo.getNome());
+			this.lblTelefoneValor.setText(amigo.getTelefone());
+		} else {
+			this.lblNomeValor.setText("");
+			this.lblTelefoneValor.setText("");
+		}
+	}
 }

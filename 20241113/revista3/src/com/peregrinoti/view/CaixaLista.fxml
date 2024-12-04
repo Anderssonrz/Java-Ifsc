@@ -51,7 +51,7 @@
                   </GridPane>
                   <ButtonBar fx:id="barBotoes" layoutX="60.0" layoutY="340.0" prefHeight="40.0" prefWidth="200.0">
                     <buttons>
-                      <Button fx:id="btnInclur" mnemonicParsing="false" onAction="#onClickBtnIncluir" text="Incluir">
+                      <Button fx:id="btnIncluir" mnemonicParsing="false" onAction="#onClickBtnIncluir" text="Incluir">
                            <tooltip>
                               <Tooltip fx:id="tlpIncluir" text="Incluir" />
                            </tooltip>
