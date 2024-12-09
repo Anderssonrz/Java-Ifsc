@@ -1,18 +1,23 @@
 package com.peregrinoti.controller;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import com.peregrinoti.entity.Emprestimo;
+import com.peregrinoti.entity.Revista;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -78,7 +83,7 @@ public class EmprestimoListaController {
 
 	@FXML
 	private Tooltip tlpIncluir;
-
+a
 	@FXML
 	private Button btnEditar;
 
@@ -93,16 +98,60 @@ public class EmprestimoListaController {
 
 	@FXML
 	void onClickBtnEditar(ActionEvent event) {
+		Emprestimo emprestimo = this.tbvEmpretimos.getSelectionModel().getSelectedItem();
 
+		if (emprestimo != null) {
+			boolean btnConfirmarClic = this.onShowTelaEmpretimoEditar(emprestimo, RevistaListaController.EMPRESTIMO_EDITAR);
+
+			if (btnConfirmarClic) {
+				this.getEmpretimoDAO().update(emprestimo, null);
+				this.carregarTableViewEmpretimos();
+			}
+		} else {
+			Alert alerta = new Alert(Alert.AlertType.ERROR);
+			alerta.setContentText("Por favor, escolha um EMPRESTIMO na tabela!");
+			alerta.show();
+		}
 	}
 
 	@FXML
 	void onClickBtnExcluir(ActionEvent event) {
+		Revista emprestimo = this.tbvEmpretimos.getSelectionModel().getSelectedItem();
 
+		if (emprestimo != null) {
+
+			Alert alerta = new Alert(AlertType.CONFIRMATION);
+			alerta.setTitle("Pergunta");
+			alerta.setHeaderText("Confirma a exclusão da revista?\n" + emprestimo.getNome());
+
+			ButtonType botaoNao = ButtonType.NO;
+			ButtonType botaoSim = ButtonType.YES;
+			alerta.getButtonTypes().setAll(botaoSim, botaoNao);
+			Optional<ButtonType> resultado = alerta.showAndWait();
+
+			if (resultado.get() == botaoSim) {
+				this.getEmpretimoDAO().delete(emprestimo);
+				this.carregarTableViewEmpretimos();
+			}
+		} else {
+			Alert alerta = new Alert(Alert.AlertType.ERROR);
+			alerta.setContentText("Por favor, escolha uma revista na tabela!");
+			alerta.show();
+		}
 	}
 
 	@FXML
 	void onClickBtnIncluir(ActionEvent event) {
 
+	}
+	public boolean onCloseQuery() {
+		Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+		alerta.setTitle("Pergunta");
+		alerta.setHeaderText("Deseja sair do emprestimo?");
+		ButtonType buttonTypeNO = ButtonType.NO;
+		ButtonType buttonTypeYES = ButtonType.YES;
+		alerta.getButtonTypes().setAll(buttonTypeYES, buttonTypeNO);
+		Optional<ButtonType> result = alerta.showAndWait();
+		return result.get() == buttonTypeYES ? true : false;
 	}
 }
