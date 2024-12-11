@@ -4,64 +4,64 @@ import java.sql.Date;
 
 public class Emprestimo {
 
-	private Long id;
+    private Long id;
+    private Date dataEmprestimo;
+    private Date dataDevolucao;
+    private Amigo amigo;
+    private Revista revista;
 
-	private Date dataEmprestimo;
+    public Long getId() {
+        return id;
+    }
 
-	private Date dataDevolucao;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	private Amigo amigo;
+    public Date getDataEmprestimo() {
+        return dataEmprestimo;
+    }
 
-	private Revista revista;
-	
+    public void setDataEmprestimo(Date dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Date getDataDevolucao() {
+        return dataDevolucao;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setDataDevolucao(Date dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
 
-	public Date getDataEmprestimo() {
-		return dataEmprestimo;
-	}
+    public Amigo getAmigo() {
+        return amigo;
+    }
 
-	public void setDataEmprestimo(Date dataEmprestimo) {
-		this.dataEmprestimo = dataEmprestimo;
-	}
+    public void setAmigo(Amigo amigo) {
+        this.amigo = amigo;
+    }
 
-	public Date getDataDevolucao() {
-		return dataDevolucao;
-	}
+    public Revista getRevista() {
+        return revista;
+    }
 
-	public void setDataDevolucao(Date dataDevolucao) {
-		this.dataDevolucao = dataDevolucao;
-	}
+    public void setRevista(Revista revista) {
+        this.revista = revista;
+    }
 
-	public void setAmigo(Amigo amigo) {
-		this.amigo = amigo;
-	}
-	public Amigo getAmigo() {
-		return amigo;
-	}
+    // Getters específicos para nome e telefone do amigo
+    public String getNomeAmigo() {
+        return amigo != null ? amigo.getNome() : null;
+    }
 
-	public Revista getRevista() {
-		return revista;
-	}
+    public String getTelefoneAmigo() {
+        return amigo != null ? amigo.getTelefone() : null;
+    }
 
-	public void setRevista(Revista revista) {
-		this.revista = revista;
-	}
-
-	public void setRevista(Object object) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setAmigo(Object object) {
-		// TODO Auto-generated method stub
-		
-	}
-
+    // Getter específico para o nome da revista
+    public String getNomeRevista() {
+        return revista != null ? revista.getNome() : null;
+    }
 }
+

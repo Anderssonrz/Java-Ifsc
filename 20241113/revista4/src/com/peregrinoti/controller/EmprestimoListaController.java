@@ -1,11 +1,17 @@
 package com.peregrinoti.controller;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
+import com.peregrinoti.dao.CaixaDAO;
+import com.peregrinoti.dao.RevistaDAO;
+import com.peregrinoti.entity.Caixa;
 import com.peregrinoti.entity.Emprestimo;
 import com.peregrinoti.entity.Revista;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -83,7 +89,7 @@ public class EmprestimoListaController {
 
 	@FXML
 	private Tooltip tlpIncluir;
-a
+
 	@FXML
 	private Button btnEditar;
 
@@ -96,9 +102,16 @@ a
 	@FXML
 	private Tooltip tlpExcluir;
 
+	private List<Emprestimo> listaEmprestimos;
+	private ObservableList<Emprestimo> observableListaEmprestimos = FXCollections.observableArrayList();
+	private EmprestimoDAO emprestimoDAO;
+
+	public static final String EMPRESTIMO_EDITAR = " - Editar";
+	public static final String EMPRESTIMO_INCLUIR = " - Incluir";
+
 	@FXML
 	void onClickBtnEditar(ActionEvent event) {
-		Emprestimo emprestimo = this.tbvEmpretimos.getSelectionModel().getSelectedItem();
+		Emprestimo emprestimo = this.tbvEmprestimos.getSelectionModel().getSelectedItem();
 
 		if (emprestimo != null) {
 			boolean btnConfirmarClic = this.onShowTelaEmpretimoEditar(emprestimo, RevistaListaController.EMPRESTIMO_EDITAR);
@@ -116,7 +129,7 @@ a
 
 	@FXML
 	void onClickBtnExcluir(ActionEvent event) {
-		Revista emprestimo = this.tbvEmpretimos.getSelectionModel().getSelectedItem();
+		Emprestimo emprestimo = this.tbvEmprestimos.getSelectionModel().getSelectedItem();
 
 		if (emprestimo != null) {
 
@@ -154,4 +167,5 @@ a
 		Optional<ButtonType> result = alerta.showAndWait();
 		return result.get() == buttonTypeYES ? true : false;
 	}
+
 }

@@ -26,7 +26,7 @@
         </Menu>
             <Menu fx:id="mnuMovimentacao" mnemonicParsing="false" text="Movimentação">
               <items>
-                <MenuItem fx:id="mnoEmprestimo" mnemonicParsing="false" onAction="#onClickMnoEmprestimo" text="Emprestimo" />
+                <MenuItem fx:id="mnoEmprestimo" mnemonicParsing="false" onAction="#onClickMnoEmprestimo" text="Empréstimo" />
               </items>
             </Menu>
         <Menu fx:id="mnuAjuda" mnemonicParsing="false" text="Ajuda">

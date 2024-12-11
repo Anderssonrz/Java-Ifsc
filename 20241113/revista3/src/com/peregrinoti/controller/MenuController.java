@@ -52,18 +52,18 @@ public class MenuController implements Initializable {
 
 	@FXML
 	private MenuItem mnoRevista;
-	
+
 	@FXML
 	private SeparatorMenuItem sepCadastro;
 
 	@FXML
 	private MenuItem mnoSair;
-	
-    @FXML
-    private Menu mnuMovimentacao;
 
-    @FXML
-    private MenuItem mnoEmprestimo;
+	@FXML
+	private Menu mnuMovimentacao;
+
+	@FXML
+	private MenuItem mnoEmprestimo;
 
 	@FXML
 	private Menu mnuAjuda;
@@ -153,6 +153,36 @@ public class MenuController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+	
+	@FXML
+    void onClickMnoEmprestimo(ActionEvent event) {
+		try {
+			// carregando o loader
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/peregrinoti/view/EmprestimoLista.fxml"));
+			Parent emprestimoListaXML = loader.load();
+
+			// carregando o controller e a scene
+			EmprestimoListaController emprestimoListaController = loader.getController();
+			Scene emprestimoListaLayout = new Scene(emprestimoListaXML);
+
+			this.getStage().setScene(emprestimoListaLayout);
+			this.getStage().setTitle("Empréstimo");
+
+			// atribuindo evento para fechar janela
+			this.getStage().setOnCloseRequest(e -> {
+				if (emprestimoListaController.onCloseQuery()) {
+					this.getStage().close();
+				} else {
+					e.consume();
+				}
+			});
+
+			this.stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+    }
 
 	@FXML
 	void onClickMnoTipoColecao(ActionEvent event) {
@@ -200,35 +230,6 @@ public class MenuController implements Initializable {
 			// atribuindo evento para fechar janela
 			this.getStage().setOnCloseRequest(e -> {
 				if (revistaListaController.onCloseQuery()) {
-					this.getStage().close();
-				} else {
-					e.consume();
-				}
-			});
-
-			this.stage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@FXML
-	void onClickMnoEmprestimo(ActionEvent event) {
-		try {
-			// carregando o loader
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/peregrinoti/view/EmprestimoLista.fxml"));
-			Parent emprestimoListaXML = loader.load();
-
-			// carregando o controller e a scene
-			RevistaListaController emprestimoListaController = loader.getController();
-			Scene emprestimoListaLayout = new Scene(emprestimoListaXML);
-
-			this.getStage().setScene(emprestimoListaLayout);
-			this.getStage().setTitle("Cadastro de emprestimo");
-
-			// atribuindo evento para fechar janela
-			this.getStage().setOnCloseRequest(e -> {
-				if (emprestimoListaController.onCloseQuery()) {
 					this.getStage().close();
 				} else {
 					e.consume();

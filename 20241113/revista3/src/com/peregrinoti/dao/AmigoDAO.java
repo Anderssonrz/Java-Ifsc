@@ -11,54 +11,9 @@ import com.peregrinoti.entity.Amigo;
 public class AmigoDAO implements DAO<Amigo> {
 
 	@Override
-	public Object get(Long id) {
-		Amigo amigo = null;
-		String sql = "select * from amigo where id = ?";
-
-		// Recupera a conexão com o banco
-		Connection conexao = null;
-
-		// Criar uma preparação da consulta
-		PreparedStatement stm = null;
-
-		// Criar uma classe que guarde o retorno da operação
-		ResultSet rset = null;
-
-		try {
-
-			conexao = new Conexao().getConnection();
-
-			stm = conexao.prepareStatement(sql);
-			stm.setInt(1, id.intValue());
-			rset = stm.executeQuery();
-
-			while (rset.next()) {
-				amigo = new Amigo();
-
-				// atribui campo para atributo
-				amigo.setId(rset.getLong("id"));
-				amigo.setNome(rset.getString("nome"));
-				amigo.setNomeResponsavel(rset.getString("nome_responsavel"));
-				amigo.setTelefone(rset.getString("telefone"));
-				amigo.setEndereco(rset.getString("endereco"));
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-				}
-
-				if (conexao != null) {
-					conexao.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return amigo;
+	public Amigo get(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -167,8 +122,8 @@ public class AmigoDAO implements DAO<Amigo> {
 		PreparedStatement stm = null;
 
 		try {
-			conexao = new Conexao().getConnection();
-
+			conexao = new Conexao().getConnection();			
+			
 			stm = conexao.prepareStatement(sql);
 			stm.setString(1, amigo.getNome());
 			stm.setString(2, amigo.getNomeResponsavel());

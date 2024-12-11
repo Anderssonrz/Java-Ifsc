@@ -20,7 +20,7 @@ public class RevistaDAO implements DAO<Revista> {
 	}
 
 	@Override
-	public Object get(Long id) {
+	public Revista get(Long id) {
 		Revista revista = null;
 		String sql = "select * from revista where id = ?";
 

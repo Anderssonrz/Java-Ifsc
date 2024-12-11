@@ -1,6 +1,7 @@
 package com.peregrinoti.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,237 +11,174 @@ import com.peregrinoti.entity.Emprestimo;
 
 public class EmprestimoDAO implements DAO<Emprestimo> {
 
-	private AmigoDAO amigoDAO;
+    private AmigoDAO amigoDAO;
+    private RevistaDAO revistaDAO;
 
-	private RevistaDAO revistaDAO;
+    public EmprestimoDAO() {
+        this.amigoDAO = new AmigoDAO();
+        this.revistaDAO = new RevistaDAO();
+    }
 
-	public EmprestimoDAO() {
-		this.amigoDAO = new AmigoDAO();
-		this.revistaDAO = new RevistaDAO();
-	}
+    private void fecharRecursos(Connection conexao, PreparedStatement stm) {
+        try {
+            if (stm != null) stm.close();
+            if (conexao != null) conexao.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public Object get(Long id) {
-		Emprestimo emprestimo = null;
-		String sql = "select * from emprestimo where id = ?";
+    @Override
+    public Emprestimo get(Long id) {
+        Emprestimo emprestimo = null;
+        String sql = "SELECT * FROM emprestimo WHERE id = ?";
 
-		// Recupera a conexão com o banco
-		Connection conexao = null;
+        Connection conexao = null;
+        PreparedStatement stm = null;
+        ResultSet rset = null;
 
-		// Criar uma preparação da consulta
-		PreparedStatement stm = null;
+        try {
+            conexao = new Conexao().getConnection();
+            stm = conexao.prepareStatement(sql);
+            stm.setLong(1, id);
+            rset = stm.executeQuery();
 
-		// Criar uma classe que guarde o retorno da operação
-		ResultSet rset = null;
+            if (rset.next()) {
+                emprestimo = new Emprestimo();
+                emprestimo.setId(rset.getLong("id"));
+                emprestimo.setDataEmprestimo(rset.getDate("data_emprestimo"));
+                emprestimo.setDataDevolucao(rset.getDate("data_devolucao"));
 
-		try {
+              
+                emprestimo.setAmigo(amigoDAO.get(rset.getLong("amigo_id")));
+                emprestimo.setRevista(revistaDAO.get(rset.getLong("revista_id")));
+            }
 
-			conexao = new Conexao().getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fecharRecursos(conexao, stm);
+        }
 
-			stm = conexao.prepareStatement(sql);
-			stm.setInt(1, id.intValue());
-			rset = stm.executeQuery();
+        return emprestimo;
+    }
 
-			while (rset.next()) {
-				emprestimo = new Emprestimo();
+    @Override
+    public List<Emprestimo> getAll() {
+        List<Emprestimo> emprestimos = new ArrayList<>();
+        String sql = "SELECT * FROM emprestimo";
 
-				// atribui campo para atributo
-				emprestimo.setId(rset.getLong("id"));
-				emprestimo.setDataEmprestimo(rset.getDate("data_emprestimo"));
-				emprestimo.setDataDevolucao(rset.getDate("data_devolucao"));
+        Connection conexao = null;
+        PreparedStatement stm = null;
+        ResultSet rset = null;
 
-				// buscando as chaves estrangeiras
-				emprestimo.setAmigo(this.amigoDAO.get(rset.getLong("amigo_id")));
-				emprestimo.setRevista(this.revistaDAO.get(rset.getLong("revista_id")));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-				}
+        try {
+            conexao = new Conexao().getConnection();
+            stm = conexao.prepareStatement(sql);
+            rset = stm.executeQuery();
 
-				if (conexao != null) {
-					conexao.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return emprestimo;
-	}
+            while (rset.next()) {
+                Emprestimo emprestimo = new Emprestimo();
+                emprestimo.setId(rset.getLong("id"));
+                emprestimo.setDataEmprestimo(rset.getDate("data_emprestimo"));
+                emprestimo.setDataDevolucao(rset.getDate("data_devolucao"));
 
-	@Override
-	public List<Emprestimo> getAll() {
-		List<Emprestimo> revistas = new ArrayList<Emprestimo>();
+                // Relacionamentos
+                emprestimo.setAmigo(amigoDAO.get(rset.getLong("amigo_id")));
+                emprestimo.setRevista(revistaDAO.get(rset.getLong("revista_id")));
 
-		String sql = "select * from emprestimo";
+                emprestimos.add(emprestimo);
+            }
 
-		// Recupera a conexão com o banco
-		Connection conexao = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fecharRecursos(conexao, stm);
+        }
 
-		// Criar uma preparação da consulta
-		PreparedStatement stm = null;
+        return emprestimos;
+    }
 
-		// Criar uma classe que guarde o retorno da operação
-		ResultSet rset = null;
+    @Override
+    public int save(Emprestimo emprestimo) {
+        String sql = "INSERT INTO emprestimo (nome_amigo, telefone_amigo, ano, nome_revista) VALUES (?, ?, ?, ?)";
 
-		try {
+        Connection conexao = null;
+        PreparedStatement stm = null;
 
-			conexao = new Conexao().getConnection();
+        try {
+            conexao = new Conexao().getConnection();
+            stm = conexao.prepareStatement(sql);
 
-			stm = conexao.prepareStatement(sql);
-			rset = stm.executeQuery();
+           
+            stm.setString(1, emprestimo.getAmigo().getNome());  
+            stm.setString(2, emprestimo.getAmigo().getTelefone());  
+            stm.setInt(3, emprestimo.getAno()); 
+            stm.setString(4, emprestimo.getRevista().getNome());  
 
-			while (rset.next()) {
-				Emprestimo emprestimo = new Emprestimo();
+            stm.execute();
+            return 1;
 
-				// atribui campo para atributo
-				emprestimo.setId(rset.getLong("id"));
-				emprestimo.setDataEmprestimo(rset.getDate("data_emprestimo"));
-				emprestimo.setDataDevolucao(rset.getDate("data_devolucao"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fecharRecursos(conexao, stm);
+        }
 
-				// buscando as chaves estrangeiras
-				emprestimo.setAmigo(this.amigoDAO.get(rset.getLong("amigo_id")));
-				emprestimo.setRevista(this.revistaDAO.get(rset.getLong("revista_id")));
+        return 0;
+    }
 
-				revistas.add(emprestimo);
-			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-				}
+    @Override
+    public boolean update(Emprestimo emprestimo, String[] params) {
+        String sql = "UPDATE emprestimo SET data_emprestimo = ?, data_devolucao = ?, amigo_id = ?, revista_id = ? WHERE id = ?";
 
-				if (conexao != null) {
-					conexao.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return revistas;
-	}
+        Connection conexao = null;
+        PreparedStatement stm = null;
 
-	@Override
-	public int save(Emprestimo emprestimo) {
-		String sql = "insert into emprestimo (data_emprestimo, data_devolucao, amigo_id, revista_id)"
-				+ " values (?, ?, ?, ?)";
+        try {
+            conexao = new Conexao().getConnection();
+            stm = conexao.prepareStatement(sql);
 
-		// Recupera a conexão com o banco
-		Connection conexao = null;
+            stm.setDate(1, new Date(emprestimo.getDataEmprestimo().getTime()));
+            stm.setDate(2, new Date(emprestimo.getDataDevolucao().getTime()));
+            stm.setLong(3, emprestimo.getAmigo().getId());
+            stm.setLong(4, emprestimo.getRevista().getId());
+            stm.setLong(5, emprestimo.getId());
 
-		// Criar uma preparação da consulta
-		PreparedStatement stm = null;
+            stm.execute();
+            return true;
 
-		try {
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fecharRecursos(conexao, stm);
+        }
 
-			conexao = new Conexao().getConnection();
+        return false;
+    }
 
-			stm = conexao.prepareStatement(sql);
-			stm.setDate(1, emprestimo.getDataEmprestimo());
-			stm.setDate(2, emprestimo.getDataDevolucao());
-			stm.setLong(3, emprestimo.getAmigo().getId());
-			stm.setLong(4, emprestimo.getRevista().getId());
+    @Override
+    public boolean delete(Emprestimo emprestimo) {
+        String sql = "DELETE FROM emprestimo WHERE id = ?";
 
-			stm.execute();
+        Connection conexao = null;
+        PreparedStatement stm = null;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-				}
+        try {
+            conexao = new Conexao().getConnection();
+            stm = conexao.prepareStatement(sql);
 
-				if (conexao != null) {
-					conexao.close();
-				}
-				return 1;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return 0;
-	}
+            stm.setLong(1, emprestimo.getId());
+            stm.execute();
+            return true;
 
-	@Override
-	public boolean update(Emprestimo emprestimo, String[] params) {
-		String sql = "update emprestimo set data_emprestimo = ?, data_devolucao = ?, amigo_id = ?, revista_id = ? where id = ?";
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fecharRecursos(conexao, stm);
+        }
 
-		// Recupera a conexão com o banco
-		Connection conexao = null;
-
-		// Criar uma preparação da consulta
-		PreparedStatement stm = null;
-
-		try {
-			conexao = new Conexao().getConnection();
-
-			stm = conexao.prepareStatement(sql);
-			stm.setDate(1, emprestimo.getDataEmprestimo());
-			stm.setDate(2, emprestimo.getDataDevolucao());
-			stm.setLong(3, emprestimo.getAmigo().getId());
-			stm.setLong(4, emprestimo.getRevista().getId());
-			stm.setLong(5, emprestimo.getRevista().getId());
-
-			stm.execute();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-				}
-
-				if (conexao != null) {
-					conexao.close();
-				}
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(Emprestimo emprestimo) {
-		String sql = "delete from emprestimo where id = ?";
-
-		// Recupera a conexão com o banco
-		Connection conexao = null;
-
-		// Criar uma preparação da consulta
-		PreparedStatement stm = null;
-
-		try {
-			conexao = new Conexao().getConnection();
-
-			stm = conexao.prepareStatement(sql);
-			stm.setLong(1, emprestimo.getId());
-			stm.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-				}
-
-				if (conexao != null) {
-					conexao.close();
-				}
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
+        return false;
+    }
 }

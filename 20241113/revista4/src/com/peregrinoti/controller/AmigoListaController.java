@@ -6,7 +6,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.peregrinoti.dao.AmigoDAO;
+import com.peregrinoti.dao.RevistaDAO;
 import com.peregrinoti.entity.Amigo;
+import com.peregrinoti.entity.Revista;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -252,5 +254,11 @@ public class AmigoListaController implements Initializable {
 			this.lblNomeValor.setText("");
 			this.lblTelefoneValor.setText("");
 		}
+	}
+	public List<Amigo> retornaListagemAmigo() {
+		if (this.getAmigoDAO() == null) {
+			this.setAmigoDAO(new AmigoDAO());
+		}
+		return this.getAmigoDAO().getAll();
 	}
 }

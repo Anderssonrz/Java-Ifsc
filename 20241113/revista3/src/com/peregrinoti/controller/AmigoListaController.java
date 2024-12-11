@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import com.peregrinoti.dao.AmigoDAO;
 import com.peregrinoti.entity.Amigo;
-import com.peregrinoti.entity.Caixa;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -115,7 +114,7 @@ public class AmigoListaController implements Initializable {
 			}
 		} else {
 			Alert alerta = new Alert(Alert.AlertType.ERROR);
-			alerta.setContentText("Por favor, escolha um(a) amigo na tabela!");
+			alerta.setContentText("Por favor, escolha um amigo na tabela!");
 			alerta.show();
 		}
 	}
@@ -254,4 +253,12 @@ public class AmigoListaController implements Initializable {
 			this.lblTelefoneValor.setText("");
 		}
 	}
+	
+	public List<Amigo> retornaListagemAmigo() {
+		if (this.getAmigoDAO() == null) {
+			this.setAmigoDAO(new AmigoDAO());
+		}
+		return this.getAmigoDAO().getAll();
+	}
+
 }

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.peregrinoti.dao.CaixaDAO;
 import com.peregrinoti.dao.RevistaDAO;
+import com.peregrinoti.entity.Caixa;
 import com.peregrinoti.entity.Revista;
 
 import javafx.collections.FXCollections;
@@ -267,5 +269,11 @@ public class RevistaListaController implements Initializable {
 		}
 
 		return false;
+	}
+	public List<Revista> retornaListagemRevista() {
+		if (this.getRevistaDAO() == null) {
+			this.setRevistaDAO(new RevistaDAO());
+		}
+		return this.getRevistaDAO().getAll();
 	}
 }

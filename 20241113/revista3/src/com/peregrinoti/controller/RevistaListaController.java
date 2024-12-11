@@ -268,4 +268,12 @@ public class RevistaListaController implements Initializable {
 
 		return false;
 	}
+	
+	public List<Revista> retornaListagemRevista() {
+		if (this.getRevistaDAO() == null) {
+			this.setRevistaDAO(new RevistaDAO());
+		}
+		return this.getRevistaDAO().getAll();
+	}
+
 }

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 
 import com.peregrinoti.entity.Amigo;
+import com.peregrinoti.entity.Emprestimo;
 import com.peregrinoti.entity.Revista;
 
 import javafx.collections.FXCollections;
@@ -24,150 +25,135 @@ import javafx.stage.Stage;
 
 public class EmprestimoEditController implements Initializable {
 
-    @FXML
-    private AnchorPane pnlPrincipal;
+	@FXML
+	private AnchorPane pnlPrincipal;
 
-    @FXML
-    private GridPane pnlDados;
+	@FXML
+	private GridPane pnlDados;
 
-    @FXML
-    private Label lblNomeAmigo;
+	@FXML
+	private Label lblNomeAmigo;
 
-    @FXML
-    private TextField txtNomeAmigo;
+	@FXML
+	private TextField txtNomeAmigo;
 
-    @FXML
-    private Label lblTelefoneAmigo;
+	@FXML
+	private Label lblTelefoneAmigo;
 
-    @FXML
-    private Label lblNomeRevista;
+	@FXML
+	private Label lblNomeRevista;
 
-    @FXML
-    private Label lblAno;
+	@FXML
+	private Label lblAno;
 
-    @FXML
-    private TextField txtTelefoneAmigo;
+	@FXML
+	private TextField txtTelefoneAmigo;
 
-    @FXML
-    private DatePicker dtpAno;
+	@FXML
+	private DatePicker dtpAno;
 
-    @FXML
-    private TextField txtNomeRevista;
+	@FXML
+	private TextField txtNomeRevista;
 
-    @FXML
-    private HBox pnlBotoes;
+	@FXML
+	private HBox pnlBotoes;
 
-    @FXML
-    private Button btnOK;
+	@FXML
+	private Button btnOK;
 
-    @FXML
-    private Button btnCancela;
-    
+	@FXML
+	private Button btnCancela;
+
 	private Stage janelaEmprestimoEdit;
 
-	private Revista emprestimo;
+	private Emprestimo emprestimo;
 
 	private boolean okClick = false;
 
 	private AmigoListaController amigoListaController;
 	private RevistaListaController revistaListaController;
 
-
-    @FXML
-    void onClickBtnCancela(ActionEvent event) {
+	@FXML
+	void onClickBtnCancela(ActionEvent event) {
 		this.getjanelaEmprestimoEdit().close();
-    }
+	}
 
-    @FXML
-    void onClickBtnOK(ActionEvent event) {
+	@FXML
+	void onClickBtnOK(ActionEvent event) {
 		if (validarCampos()) {
-			this.emprestimo.setNomeAmigo(this.txtNomeAmigo.getText());
-			this.emprestimo.setTelefoneAmigo(this.txtTelefoneAmigo.getText());
-			this.emprestimo.setNomeRevista(this.txtNomeRevista.getText());
+			this.emprestimo.setAmigo(this.txtNomeAmigo.getText());
+			this.emprestimo.setAmigo(this.txtTelefoneAmigo.getText());
+			this.emprestimo.setRevista(this.txtNomeRevista.getText());
 			this.emprestimo.setAno(Date.valueOf(this.dtpAno.getValue()));
-			
 
 			this.okClick = true;
 			this.getjanelaEmprestimoEdit().close();
 		}
 	}
-    
 
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		this.amigoListaController = new AmigoListaController();
+		this.revistaListaController = new RevistaListaController();
 
-
-@Override
-public void initialize(URL location, ResourceBundle resources) {
-	this.amigoListaController = new AmigoListaController();
-	this.revistaListaController = new RevistaListaController();
-
-	this.carregarTextFieldAmigo();
-	this.carregarTextFieldRevista();
-}
-
-public Stage getjanelaEmprestimoEdit() {
-	return janelaEmprestimoEdit;
-}
-
-public void setJanelaRevistaEdit(Stage janelaEmprestimoEdit) {
-	this.janelaEmprestimoEdit = janelaEmprestimoEdit;
-}
-
-public void populaTela(Revista emprestimo) {
-	this.emprestimo = emprestimo;
-
-	this.txtNomeAmigo.setText(this.emprestimo.getNome());
-
-	if (this.emprestimo.getAmigo() != null) {
-		this.txtTelefoneAmigo.setText(this.emprestimo.getAmigo());
+		this.carregarTextFieldAmigo();
+		this.carregarTextFieldRevista();
 	}
 
-	if (this.emprestimo.getRevista() != null) {
-		this.txtNomeRevista.setText(this.emprestimo.getRevista());
-	}
-	if (this.emprestimo.getAno() != null) {
-		this.dtpAno.setValue(this.emprestimo.getAno().toLocalDate());
-	}
-}
-
-public boolean isOkClick() {
-	return okClick;
-}
-
-private boolean validarCampos() {
-	String mensagemErros = new String();
-
-	if (this.txtNomeAmigo.getText() == null || this.txtNomeAmigo.getText().trim().length() == 0) {
-		mensagemErros += "Informe o nome!\n";
+	public Stage getjanelaEmprestimoEdit() {
+		return janelaEmprestimoEdit;
 	}
 
-	if (mensagemErros.length() == 0) {
-		return true;
-	} else {
-		Alert alerta = new Alert(Alert.AlertType.ERROR);
-		alerta.initOwner(this.janelaRevistaEdit);
-		alerta.setTitle("Dados inválidos!");
-		alerta.setHeaderText("Favor corrigir as seguintes informações:");
-		alerta.setContentText(mensagemErros);
-		alerta.showAndWait();
+	public void setJanelaEmprestimoEdit(Stage janelaEmprestimoEdit) {
+		this.janelaEmprestimoEdit = janelaEmprestimoEdit;
+	}
 
-		return false;
+	public void populaTela(Emprestimo emprestimo) {
+		this.emprestimo = emprestimo;
+
+		this.txtNomeAmigo.setText(this.emprestimo.getNome());
+
+		if (this.emprestimo.getAmigo() != null) {
+			this.txtTelefoneAmigo.setValue(this.emprestimo.getAmigo());
+		}
+
+		if (this.emprestimo.getRevista() != null) {
+			this.txtNomeRevista.setValue(this.emprestimo.getRevista());
+		}
+		if (this.emprestimo.getAno() != null) {
+			this.dtpAno.setValue(this.emprestimo.getAno().toLocalDate());
+		}
+	}
+
+	public boolean isOkClick() {
+		return okClick;
+	}
+
+	private boolean validarCampos() {
+		String mensagemErros = new String();
+
+		if (this.txtNomeAmigo.getText() == null || this.txtNomeAmigo.getText().trim().length() == 0) {
+			mensagemErros += "Informe o nome do amigo!\n";
+		}
+		if (this.txtTelefoneAmigo.getText() == null || this.txtTelefoneAmigo.getText().trim().length() == 0) {
+			mensagemErros += "Informe o telefone do amigo!\n";
+		}
+
+		if (this.txtNomeAmigo.getText() == null || this.txtNomeRevista.getText().trim().length() == 0) {
+			mensagemErros += "Informe o nome da revista!\n";
+		}
+
+		if (mensagemErros.length() == 0) {
+			return true;
+		} else {
+			Alert alerta = new Alert(Alert.AlertType.ERROR);
+			alerta.initOwner(this.janelaEmprestimoEdit);
+			alerta.setTitle("Dados inválidos!");
+			alerta.setHeaderText("Favor corrigir as seguintes informações:");
+			alerta.setContentText(mensagemErros);
+			alerta.showAndWait();
+
+			return false;
+		}
 	}
 }
-
-public void carregarTextFieldAmigo() {
-	ObservableList<Amigo> observableListaAmigo = FXCollections
-			.observableArrayList(this.amigoListaController.retornaListagemAmigo());
-
-	this.txtNomeAmigo.setNomeAmigo(observableListaAmigo);
-	this.txtTelefoneAmigo.setTelefoneAmigo(observableListaAmigo);
-
-}
-
-public void carregarTextFieldRevista() {
-	ObservableList<Revista> observableListaRevista = FXCollections
-			.observableArrayList(this.revistaListaController.retornaListagemRevista());
-
-	this.txtNomeRevista.setNomeRevista(observableListaRevista);
-}
-}
-
