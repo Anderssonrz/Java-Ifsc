@@ -28,8 +28,8 @@
             <TextField fx:id="txtNomeAmigo" prefHeight="25.0" prefWidth="253.0" GridPane.columnIndex="1" />
             <Label fx:id="lblTelefoneAmigo" text="Telefone Amigo" GridPane.rowIndex="1" />
             <TextField fx:id="txtTelefoneAmigo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="lblAno" text="Ano" GridPane.rowIndex="2" />
-            <DatePicker fx:id="dtpAno" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="lblAno" text="Data empretimo" GridPane.rowIndex="2" />
+            <DatePicker fx:id="dtpAno" prefHeight="25.0" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lblRevista" text="Nome Revista" GridPane.rowIndex="3" />
             <TextField fx:id="txtNomeRevista" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>

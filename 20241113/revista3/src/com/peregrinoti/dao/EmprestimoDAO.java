@@ -19,26 +19,23 @@ public class EmprestimoDAO implements DAO<Emprestimo> {
         this.revistaDAO = new RevistaDAO();
     }
 
-    private void fecharRecursos(Connection conexao, PreparedStatement stm) {
-        try {
-            if (stm != null) stm.close();
-            if (conexao != null) conexao.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public Emprestimo get(Long id) {
         Emprestimo emprestimo = null;
         String sql = "SELECT * FROM emprestimo WHERE id = ?";
 
-        Connection conexao = null;
-        PreparedStatement stm = null;
-        ResultSet rset = null;
+		// Recupera a conexão com o banco
+		Connection conexao = null;
+
+		// Criar uma preparação da consulta
+		PreparedStatement stm = null;
+
+		// Criar uma classe que guarde o retorno da operação
+		ResultSet rset = null;
 
         try {
             conexao = new Conexao().getConnection();
+            
             stm = conexao.prepareStatement(sql);
             stm.setLong(1, id);
             rset = stm.executeQuery();
@@ -56,10 +53,7 @@ public class EmprestimoDAO implements DAO<Emprestimo> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            fecharRecursos(conexao, stm);
         }
-
         return emprestimo;
     }
 
@@ -92,8 +86,6 @@ public class EmprestimoDAO implements DAO<Emprestimo> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            fecharRecursos(conexao, stm);
         }
 
         return emprestimos;
@@ -113,7 +105,7 @@ public class EmprestimoDAO implements DAO<Emprestimo> {
            
             stm.setString(1, emprestimo.getAmigo().getNome());  
             stm.setString(2, emprestimo.getAmigo().getTelefone());  
-            stm.setInt(3, emprestimo.getAno()); 
+            stm.setDate(3, emprestimo.getDataDevolucao()); 
             stm.setString(4, emprestimo.getRevista().getNome());  
 
             stm.execute();
@@ -121,9 +113,7 @@ public class EmprestimoDAO implements DAO<Emprestimo> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            fecharRecursos(conexao, stm);
-        }
+        } 
 
         return 0;
     }
@@ -151,9 +141,7 @@ public class EmprestimoDAO implements DAO<Emprestimo> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            fecharRecursos(conexao, stm);
-        }
+        } 
 
         return false;
     }
@@ -175,9 +163,7 @@ public class EmprestimoDAO implements DAO<Emprestimo> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            fecharRecursos(conexao, stm);
-        }
+        } 
 
         return false;
     }
